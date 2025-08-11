@@ -1,43 +1,57 @@
-const CACHE_NAME = 'a4f-cache-v1';
+const CACHE_NAME = 'ask4fitness-cache-v1';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/public.html',
-  '/styles.css',
-  '/app.js',
-  '/manifest.webmanifest',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png'
+  './',
+  'index.html',
+  'public.html',
+  'styles.css',
+  'app.js',
+  'manifest.webmanifest',
+  'icons/icon-192.png',
+  'icons/icon-512.png'
 ];
-self.addEventListener('install', event => {
+
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
-  );
-});
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys => {
-      return Promise.all(keys.map(key => {
-        if (key !== CACHE_NAME) {
-          return caches.delete(key);
-        }
-      }));
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS);
     })
   );
 });
-self.addEventListener('fetch', event => {
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys
+          .filter((key) => key !== CACHE_NAME)
+          .map((key) => caches.delete(key))
+      );
+    })
+  );
+});
+
+self.addEventListener('fetch', (event) => {
   const request = event.request;
+  // Only handle GET requests
   if (request.method !== 'GET') return;
   event.respondWith(
-    caches.match(request).then(response => {
-      return response || fetch(request).then(networkResponse => {
-        return caches.open(CACHE_NAME).then(cache => {
-          cache.put(request, networkResponse.clone());
-          return networkResponse;
-        });
-      });
-    }).catch(() => {
-      return caches.match('/index.html');
+    caches.match(request).then((cached) => {
+      return (
+        cached ||
+        fetch(request).then((response) => {
+          // update cache
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, responseClone);
+          });
+          return response;
+        }).catch(() => {
+          // fallback offline page for navigation requests
+          if (request.mode === 'navigate') {
+            return caches.match('index.html');
+          }
+        })
+      );
     })
   );
 });

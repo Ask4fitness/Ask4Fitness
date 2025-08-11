@@ -1,136 +1,220 @@
+/*
+ * Ask4Fitness PWA – Stylesheet
+ *
+ * A minimalist dark theme inspired by popular fitness apps. All colours and
+ * fonts are defined as CSS variables so that the admin can customise the
+ * look and feel of the application at runtime. Adjust the values of
+ * `--accent-color` and `--font-family` via the admin interface.
+ */
+
 :root {
-  --accent: #ffb800;
-  --primary: #111;
-  --secondary: #f5f5f5;
-  font-family: Arial, sans-serif;
+  --primary-color: #000000;
+  --accent-color: #f5a623;
+  --text-color: #ffffff;
+  --font-family: 'Helvetica Neue', Arial, sans-serif;
 }
-body {
+
+* {
+  box-sizing: border-box;
   margin: 0;
-  background: var(--primary);
-  color: var(--secondary);
+  padding: 0;
+}
+
+body {
+  background: var(--primary-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  line-height: 1.5;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
+
 header {
-  background: var(--primary);
+  background: var(--primary-color);
   padding: 1rem;
+  border-bottom: 2px solid var(--accent-color);
+}
+
+header h1 {
+  font-size: 1.6rem;
   text-align: center;
-  border-bottom: 1px solid var(--accent);
+  color: var(--accent-color);
+  margin-bottom: 0.5rem;
 }
-h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: var(--accent);
-}
+
 nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 0.5rem;
-  margin-top: 0.5rem;
 }
+
 nav button {
   flex: 1;
-  padding: 0.5rem;
-  background: var(--accent);
-  color: var(--primary);
+  background: var(--accent-color);
+  color: var(--primary-color);
   border: none;
-  border-radius: 4px;
+  padding: 0.6rem 0.8rem;
   font-size: 1rem;
+  font-weight: bold;
+  border-radius: 4px;
   cursor: pointer;
+  transition: background 0.2s ease-in-out;
 }
+
+nav button:hover,
+nav button:focus {
+  background: #e6971e;
+}
+
 main {
   flex: 1;
   padding: 1rem;
   overflow-y: auto;
 }
-/* Scoreboard styles */
-.podium {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
+
+h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
 }
-.podium-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 0.5rem;
-}
-.medal {
-  font-size: 2rem;
-}
-.name {
-  font-weight: bold;
-}
-.points {
-  font-size: 0.8rem;
-}
-.score-list {
-  list-style: none;
-  padding: 0;
-}
-.score-item {
-  padding: 0.5rem;
-  margin-bottom: 0.25rem;
-  background: rgba(255,255,255,0.05);
-  display: flex;
-  justify-content: space-between;
-  border-radius: 4px;
-}
-.shoutout {
+
+h3 {
+  font-size: 1.2rem;
   margin-top: 1rem;
-  padding: 0.5rem;
-  background: rgba(255,255,255,0.1);
-  border-radius: 4px;
-}
-/* Admin forms */
-.form-group {
-  margin-bottom: 0.75rem;
-}
-.form-group label {
-  display: block;
   margin-bottom: 0.25rem;
 }
-.form-group input[type="text"],
-.form-group input[type="number"],
-.form-group textarea,
-.form-group select {
-  width: 100%;
-  padding: 0.5rem;
-  border-radius: 4px;
-  border: none;
-  font-size: 1rem;
-}
+
+/* Buttons */
 .btn {
-  background: var(--accent);
-  color: var(--primary);
-  padding: 0.5rem 1rem;
+  background: var(--accent-color);
+  color: var(--primary-color);
   border: none;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
   border-radius: 4px;
   cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s ease-in-out;
 }
+
+.btn:hover,
+.btn:focus {
+  background: #e6971e;
+}
+
+/* Tables */
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
-th, td {
-  border: 1px solid rgba(255,255,255,0.1);
-  padding: 0.5rem;
+
+table th,
+table td {
   text-align: left;
+  padding: 0.5rem;
+  border-bottom: 1px solid #444;
 }
-th {
-  background: rgba(255,255,255,0.1);
-  color: var(--accent);
+
+table th {
+  background: #111;
+  color: var(--accent-color);
 }
+
+/* Progress bar */
 .progress-bar {
   height: 8px;
-  background: rgba(255,255,255,0.1);
+  background: #333;
   border-radius: 4px;
   overflow: hidden;
-  margin-top: 0.25rem;
 }
+
 .progress-bar div {
   height: 100%;
-  background: var(--accent);
+  background: var(--accent-color);
+  width: 0;
+}
+
+/* Podium */
+.podium {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.podium-item {
+  flex: 1;
+  background: #111;
+  border-radius: 8px;
+  padding: 0.75rem;
+  text-align: center;
+  position: relative;
+}
+
+.podium-item .medal {
+  font-size: 1.6rem;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+/* Form groups */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+  color: var(--accent-color);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background: #111;
+  color: var(--text-color);
+}
+
+/* Shoutout text */
+.shoutout {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: #111;
+  border-left: 3px solid var(--accent-color);
+  font-style: italic;
+}
+
+/* Admin customisation controls */
+.color-picker {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.color-picker input[type="color"] {
+  border: none;
+  width: 32px;
+  height: 32px;
+  background: none;
+  padding: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Lists */
+ul {
+  list-style: disc inside;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+li {
+  margin-bottom: 0.25rem;
 }
